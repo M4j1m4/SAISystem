@@ -28,12 +28,12 @@
         </div>
     </div>
     <div class="admin-button-container">
-        <button class="admin-button">ADMIN &#9660;</button>
+        <button class="admin-button">GUEST &#9660;</button>
         <button class="signout-button"><a href="logout.php" class="none1">SIGN OUT</a></button>
     </div>
     <div class="vertical-container">
         <div class="circle-container">
-            <img src="/img/1.png" alt="ClarkLane Logo">
+            <img src="img/1.png" alt="ClarkLane Logo">
         </div>
         <div class="button-container">  
             <div class="home-button-container">
@@ -52,6 +52,7 @@
     </div>
     <div class="content-container">
         <div class="container my-5">
+        <a class="btn btn-primary btn-width" role="button" target="_blank" href="/SAISystem/generate_salesreport.php"><i class="fas fa-flag"></i>     GENERATE REPORT</a>
         <div class="fav-sales">
             <div class="fav-sales-left">
                 <h3>TOP SALES</h3>

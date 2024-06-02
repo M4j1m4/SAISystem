@@ -35,7 +35,7 @@
     </div>
     <div class="vertical-container">
         <div class="circle-container">
-            <img src="/img/1.png" alt="ClarkLane Logo">
+            <img src="img/1.png" alt="ClarkLane Logo">
         </div>
         <div class="button-container">  
             <div class="home-button-container">

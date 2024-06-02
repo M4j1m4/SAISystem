@@ -37,12 +37,12 @@ if(isset($_SESSION['id']) && isset($_SESSION['username'])){
             </div>
         </div>
         <div class="admin-button-container">
-            <button class="admin-button">ADMIN &#9660;</button>
+            <button class="admin-button">GUEST &#9660;</button>
             <button class="signout-button"><a href="logout.php" class="none1">SIGN OUT</a></button>
         </div>
         <div class="vertical-container">
             <div class="circle-container">
-                <img src="/img/1.png" alt="ClarkLane Logo">
+                <img src="img/1.png" alt="ClarkLane Logo">
             </div>
             <div class="button-container">  
                 <div class="home-button-container">

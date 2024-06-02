@@ -26,7 +26,7 @@
     </div>
     <div class="vertical-container">
         <div class="circle-container">
-            <img src="/img/1.png" alt="ClarkLane Logo">
+            <img src="img/1.png" alt="ClarkLane Logo">
         </div>
         <div class="nav-container">
          <div class="white-container">
@@ -55,7 +55,7 @@
             <div class="color-design">
                 <h1>DAILY REPORT<h1>
             </div>    
-            <form action="generate_pdf.php" method="POST">
+            <form action="generate_pdf.php" method="POST" target="_blank">
                 <button type="submit" class="btn btn-primary">Generate Report</button>
             </form>
             <div class="spacetop">
