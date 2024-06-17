@@ -60,11 +60,118 @@
     </div>
     <div class="content-container">
         <div class="container my-5">
-            <a class="btn btn-primary btn-width" role="button" href="/SAISystem/createPurchase.php"><i class="fas fa-truck"></i>    CREATE PURCHASE</a>
+            <a class="btn btn-primary btn-width" role="button" href="/SAISystem/emailBoughtInventory.php"><i class="fas fa-truck"></i>    CREATE PURCHASE</a>
             <div class="spacetop">
                 <a class="btn btn-primary btn-width" role="button" target="_blank" href="/SAISystem/generate_salesreport.php"><i class="fas fa-flag"></i>     GENERATE REPORT</a>
             </div>
-        <div class="fav-sales">
+            <!-- Date Range Selector -->  
+            <div class="color-design spacetop">
+                <h3>SALES HISTORY</h3>
+            </div>
+            <div class="row justify-content-center"> <!-- Center the content horizontally -->
+                <div class="col-sm-11"> <!-- Adjust column size as needed -->
+                    <form action="salesreport.php" method="GET" class="mt-3 mb-3">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Date Range</span>
+                            <input type="date" class="form-control" id="start-date" name="start-date">
+                            <span class="input-group-text">to</span>    
+                            <input type="date" class="form-control" id="end-date" name="end-date">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" role="button"><i class='fas fa-edit'></i>     SUBMIT</button>
+                    </form>
+                </div>
+            </div>
+
+                <form action="salesreport.php" method="GET" class="mt-3 mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Category/Product Name" name="search">
+                        <button class="btn btn-primary btn-width" role="button" type="submit"><i class="fas fa-search"></i> Search</button>
+                    </div>
+                </form>
+
+            <!-- Sales Report Table -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Purchase Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+include 'db_connection.php';
+
+// Define default start and end dates
+$start_date = isset($_GET['start-date']) ? $_GET['start-date'] : date('Y-m-d', strtotime('-1 week'));
+$end_date = isset($_GET['end-date']) ? $_GET['end-date'] : date('Y-m-d');
+
+// Format start and end dates for timestamp comparison
+$start_timestamp = $start_date . ' 00:00:00';
+$end_timestamp = $end_date . ' 23:59:59';
+
+// Check if a search query is submitted
+if (isset($_GET['search'])) {
+    $search = $_GET['search'];
+    // Query to search for the input in category or product name
+    $sql = "SELECT id, category, product_name, quantity, price, date FROM sales_report WHERE quantity > 0 AND (category LIKE '%$search%' OR product_name LIKE '%$search%')";
+
+    // Check if start and end dates are provided
+    if (!empty($start_date) && !empty($end_date)) {
+        $sql .= " AND date BETWEEN '$start_timestamp' AND '$end_timestamp'";
+    }
+
+    // Check if category is provided
+    if (!empty($_GET['category'])) {
+        $category = $_GET['category'];
+        $sql .= " AND category = '$category'";
+    }
+} else {
+    // Fetch data from the sales_report table within the specified date range and category, ordered by date in descending order
+    $sql = "SELECT id, category, product_name, quantity, price, date FROM sales_report WHERE quantity > 0";
+
+    // Check if start and end dates are provided
+    if (!empty($start_date) && !empty($end_date)) {
+        $sql .= " AND date BETWEEN '$start_timestamp' AND '$end_timestamp'";
+    }
+
+    // Check if category is provided
+    if (!empty($_GET['category'])) {
+        $category = $_GET['category'];
+        $sql .= " AND category = '$category'";
+    }
+
+    // Order by date in descending order
+    $sql .= " ORDER BY date DESC";
+}
+
+$result = $connection->query($sql);
+
+// Check if there are any rows returned
+if ($result->num_rows > 0) {
+    // Output data of each row
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . $row["category"] . "</td>";
+        echo "<td>" . $row["product_name"] . "</td>";
+        echo "<td>" . $row["quantity"] . "</td>";
+        echo "<td>" . $row["price"] . "</td>";
+        echo "<td>" . $row["date"] . "</td>"; 
+        echo "</tr>";
+    }
+} else {
+    echo "<tr><td colspan='5'>No data found</td></tr>";
+}
+
+// Close connection
+$connection->close();
+?>
+                </tbody>
+            </table>
+            <div class="fav-sales">
             <div class="fav-sales-left">
                 <h3>TOP SALES</h3>
             </div>
@@ -190,114 +297,8 @@
         </div>
     </div>
 </div>
-            <!-- Date Range Selector -->  
-            <div class="color-design spacetop">
-                <h3>SALES HISTORY</h3>
-            </div>
-            <div class="row justify-content-center"> <!-- Center the content horizontally -->
-                <div class="col-sm-11"> <!-- Adjust column size as needed -->
-                    <form action="salesreport.php" method="GET" class="mt-3 mb-3">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Date Range</span>
-                            <input type="date" class="form-control" id="start-date" name="start-date">
-                            <span class="input-group-text">to</span>    
-                            <input type="date" class="form-control" id="end-date" name="end-date">
-                        </div>
-
-                        <button type="submit" class="btn btn-primary" role="button"><i class='fas fa-edit'></i>     SUBMIT</button>
-                    </form>
-                </div>
-            </div>
-
-                <form action="salesreport.php" method="GET" class="mt-3 mb-3">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Category/Product Name" name="search">
-                        <button class="btn btn-primary btn-width" role="button" type="submit"><i class="fas fa-search"></i> Search</button>
-                    </div>
-                </form>
-
-            <!-- Sales Report Table -->
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Category</th>
-                        <th>Product Name</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Purchase Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php
-include 'db_connection.php';
-
-// Define default start and end dates
-$start_date = isset($_GET['start-date']) ? $_GET['start-date'] : date('Y-m-d', strtotime('-1 week'));
-$end_date = isset($_GET['end-date']) ? $_GET['end-date'] : date('Y-m-d');
-
-// Format start and end dates for timestamp comparison
-$start_timestamp = $start_date . ' 00:00:00';
-$end_timestamp = $end_date . ' 23:59:59';
-
-// Check if a search query is submitted
-if (isset($_GET['search'])) {
-    $search = $_GET['search'];
-    // Query to search for the input in category or product name
-    $sql = "SELECT category, product_name, quantity, price, date FROM sales_report WHERE quantity > 0 AND (category LIKE '%$search%' OR product_name LIKE '%$search%')";
-
-    // Check if start and end dates are provided
-    if (!empty($start_date) && !empty($end_date)) {
-        $sql .= " AND date BETWEEN '$start_timestamp' AND '$end_timestamp'";
-    }
-
-    // Check if category is provided
-    if (!empty($_GET['category'])) {
-        $category = $_GET['category'];
-        $sql .= " AND category = '$category'";
-    }
-} else {
-    // Fetch data from the sales_report table within the specified date range and category, ordered by date in descending order
-    $sql = "SELECT category, product_name, quantity, price, date FROM sales_report WHERE quantity > 0";
-
-    // Check if start and end dates are provided
-    if (!empty($start_date) && !empty($end_date)) {
-        $sql .= " AND date BETWEEN '$start_timestamp' AND '$end_timestamp'";
-    }
-
-    // Check if category is provided
-    if (!empty($_GET['category'])) {
-        $category = $_GET['category'];
-        $sql .= " AND category = '$category'";
-    }
-
-    // Order by date in descending order
-    $sql .= " ORDER BY date DESC";
-}
-
-$result = $connection->query($sql);
-
-// Check if there are any rows returned
-if ($result->num_rows > 0) {
-    // Output data of each row
-    while ($row = $result->fetch_assoc()) {
-        echo "<tr>";
-        echo "<td>" . $row["category"] . "</td>";
-        echo "<td>" . $row["product_name"] . "</td>";
-        echo "<td>" . $row["quantity"] . "</td>";
-        echo "<td>" . $row["price"] . "</td>";
-        echo "<td>" . $row["date"] . "</td>";
-        echo "</tr>";
-    }
-} else {
-    echo "<tr><td colspan='5'>No data found</td></tr>";
-}
-
-// Close connection
-$connection->close();
-?>
-                </tbody>
-            </table>
         </div>
+
     </div>
 </body>
 </html>

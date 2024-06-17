@@ -73,7 +73,7 @@ if(isset($_SESSION['id']) && isset($_SESSION['username'])){
                     <h3>INVENTORY</h3>
                 </div> 
                 <div class="newItem">
-                    <a class="btn btn-primary btn-width" href="/SAISystem/createInventory.php" role="button"><i class="fas fa-plus-circle add-icon"></i>    NEW ITEM</a>
+                    <a class="btn btn-primary btn-width" href="/SAISystem/emailVerification.php" role="button"><i class="fas fa-plus-circle add-icon"></i>    NEW ITEM</a>
                 </div>
                 <br>
                 <!-- Search Form -->
@@ -129,8 +129,8 @@ if(isset($_SESSION['id']) && isset($_SESSION['username'])){
                                 <td><img src='images/$row[product_image]' alt='$row[product_name]' style='max-width: 100px;'></td>
                                 <td>$row[stocks]</td>
                                 <td>
-                                    <a class='btn btn-primary btn-sm' href='/SAISystem/editInventory.php?id=$row[id]'><i class='fas fa-edit'></i>   EDIT</a>
-                                    <a class='btn btn-danger btn-sm' href='/SAISystem/deleteInventory.php?id=$row[id]'><i class='fas fa-trash-alt'></i>   DELETE</a>
+                                    <a class='btn btn-primary btn-sm' href='/SAISystem/emailEditInv.php?id=$row[id]'><i class='fas fa-edit'></i>   EDIT</a>
+                                    <a class='btn btn-danger btn-sm' href='/SAISystem/emailDeleteInv.php?id=$row[id]'><i class='fas fa-trash-alt'></i>   DELETE</a>
                                 </td>
                             </tr>
                             ";

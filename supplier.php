@@ -63,7 +63,7 @@
                 <div class="color-design">
                     <h3>SUPPLIERS</h3>
                 </div> 
-                <a class="btn btn-primary btn-width" href="/SAISystem/createSupplier.php" role="button"><i class="fas fa-plus-circle add-icon"></i>    NEW SUPPLIER</a>
+                <a class="btn btn-primary btn-width" href="/SAISystem/emailCreateSupplier.php" role="button"><i class="fas fa-plus-circle add-icon"></i>    NEW SUPPLIER</a>
                 <br>
                 <table class="table">
                     <thead>
@@ -100,8 +100,8 @@
                                 <td>$row[product]</td>
                                 <td>$row[contactInfo]</td>
                                 <td>
-                                    <a class='btn btn-primary btn-sm' href='/SAISystem/editSupplier.php?id=$row[id]'><i class='fas fa-edit'></i>   EDIT</a>
-                                    <a class='btn btn-danger btn-sm' href='/SAISystem/deleteSupplier.php?id=$row[id]'><i class='fas fa-trash-alt'></i>   DELETE</a>
+                                    <a class='btn btn-primary btn-sm' href='/SAISystem/emailEditSupplier.php?id=$row[id]'><i class='fas fa-edit'></i>   EDIT</a>
+                                    <a class='btn btn-danger btn-sm' href='/SAISystem/emailDeleteSupp.php?id=$row[id]'><i class='fas fa-trash-alt'></i>   DELETE</a>
                                 </td>
                             </tr>
                             ";

@@ -36,7 +36,7 @@
 }
 
 .content-container {
-    width: 79vw;
+    width: 78vw;
     height: auto;
     position: relative;
     top: 25vh;
@@ -277,20 +277,10 @@
 }
 
 .scroll-to-top-button {
-    width: 100px; /* Set a wider width */
-    height: 50px; /* Set a taller height */
     font-size: 15px; /* Increase font size */
-    background-color: #333; /* Adjust background color */
-    color: white; /* Set text color */
+     /* Set text color */
     border: none;
-    border-radius: 50%; /* Make it a circle */
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-}
 
-.scroll-to-top-button:hover {
-    background-color: #555; /* Darken background color on hover */
-    transform: scale(1.1); /* Add a slight scale effect on hover */
 }
 
 .btn-width {
@@ -522,6 +512,18 @@
     .left-half, .right-half {
       flex: 0 0 100%;
     }
+  }
+
+  .container {
+    font-size: 15px;
+  }
+
+  .space-beside {
+    display: flex;
+    justify-content: space-between;
+    width: 60%; /* Adjust the width of the container */
+    max-width: 1200px; /* Optional: Set a maximum width */
+    margin: 0 auto; /* Center the container horizontally */
   }
   
   

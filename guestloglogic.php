@@ -1,47 +1,76 @@
 <?php
 session_start();
 
-$conn = mysqli_connect("localhost", "root", "", "clbc_guest");
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "clbc_users";
 
-if(isset($_POST['uname']) && isset($_POST['password'])) {
-    function validate($data){
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    function validate($data) {
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
         return $data;
     }
 
-    $uname = validate($_POST['uname']);
-    $pass = validate($_POST['password']);
+    $uname = isset($_POST['uname']) ? validate($_POST['uname']) : '';
+    $pass = isset($_POST['password']) ? validate($_POST['password']) : '';
 
-    if(empty($uname)) {
+    if (empty($uname) && empty($pass)) {
+        header("Location: guest.php?error=Username and password are required");
+        exit();
+    } elseif (empty($uname)) {
         header("Location: guest.php?error=Username is required");
         exit();
-    } elseif(empty($pass)) {
+    } elseif (empty($pass)) {
         header("Location: guest.php?error=Password is required");
         exit();
     } else {
-        // Check if username and password match in the database
-        $sql = "SELECT * FROM guest WHERE username='$uname' AND password='$pass'";
-        $result = mysqli_query($conn, $sql);
+        $sql = "SELECT * FROM guest WHERE username = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $uname);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-        if(mysqli_num_rows($result) === 1) {
-            // If username and password match, log the user in
-            $row = mysqli_fetch_assoc($result);
-            $_SESSION['username'] = $row['username'];
-            $_SESSION['name'] = $row['name'];
-            $_SESSION['id'] = $row['id'];
-            header("Location: guesthome.php");
-            exit();
+        if ($result->num_rows === 1) {
+            $row = $result->fetch_assoc();
+            $stored_password = $row['password'];
+
+            if ($pass === $stored_password) { // Compare plain text passwords
+                $_SESSION['username'] = $row['username'];
+                $_SESSION['name'] = $row['name'];
+                $_SESSION['id'] = $row['id'];
+
+                if (isset($row['category']) && $row['category'] == 'guest') {
+                    header("Location: guesthome.php");
+                } else {
+                    header("Location: guesthome.php");
+                }
+                exit();
+            } else {
+                header("Location: guest.php?error=Incorrect password");
+                exit();
+            }
         } else {
-            // If username and password do not match, redirect to login page with error
-            header("Location: guest.php?error=Incorrect username or password");
+            header("Location: guest.php?error=Incorrect username");
             exit();
         }
+
+        $stmt->close();
     }
 } else {
-    // If username or password are not set, redirect to login page
-    header("Location: guest.php");
+    header("Location: guestlogin.php");
     exit();
 }
+
+$conn->close();
 ?>

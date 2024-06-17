@@ -63,14 +63,16 @@
                 <div class="color-design">
                     <h3>USERS</h3>
                 </div> 
-                <a class="btn btn-primary btn-width" href="/SAISystem/create.php" role="button"><i class="fas fa-plus-circle add-icon"></i>    NEW ACCOUNT</a>
                 <br>
+                <h3>ADMIN</h3>
+                <a class="btn btn-primary btn-width" href="/SAISystem/emailCreateUser.php" role="button"><i class="fas fa-plus-circle add-icon"></i>    NEW ACCOUNT</a>
                 <table class="table">
                     <thead>
                         <tr>
                             <th>USERNAME</th>
                             <th>CATEGORY</th>
                             <th>CREATED AT</th>
+                            <th>EMAIL</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -99,9 +101,58 @@
                                 <td>$row[username]</td>
                                 <td>$row[category]</td>
                                 <td>$row[created_at]</td>
+                                <td>$row[gmail]</td>
                                 <td>
-                                    <a class='btn btn-primary btn-sm' href='/SAISystem/edit.php?id=$row[id]'><i class='fas fa-edit'></i>   EDIT</a>
-                                    <a class='btn btn-danger btn-sm' href='/SAISystem/delete.php?id=$row[id]'><i class='fas fa-trash-alt'></i>   DELETE</a>
+                                    <a class='btn btn-primary btn-sm' href='/SAISystem/emailEdittUsers.php?id=$row[id]'><i class='fas fa-edit'></i>   EDIT</a>
+                                    <a class='btn btn-danger btn-sm' href='/SAISystem/emailDeleteeUsers.php?id=$row[id]'><i class='fas fa-trash-alt'></i>   DELETE</a>
+                                </td>
+                            </tr>
+                            ";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+                <h3>GUEST</h3>
+                <a class="btn btn-primary btn-width" href="/SAISystem/emailCreateGuest.php" role="button"><i class="fas fa-plus-circle add-icon"></i>    NEW ACCOUNT</a>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>USERNAME</th>
+                            <th>CATEGORY</th>
+                            <th>CREATED AT</th>
+                            <th>EMAIL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $servername= "localhost";
+                        $username="root";
+                        $password="";
+                        $database="clbc_users";
+
+                        $connection = new mysqli($servername, $username, $password, $database);
+
+                        if ($connection-> connect_error) {
+                            die("Connection failed:" . $connection-> connect_error);
+                        }
+                        
+                        $sql = "SELECT * from guest";
+                        $result = $connection->query($sql);
+
+                        if(!$result){
+                            die("Invalid Query:" . $connection->error);
+                        }
+
+                        while($row = $result->fetch_assoc()){
+                            echo "
+                            <tr>
+                                <td>$row[username]</td>
+                                <td>$row[category]</td>
+                                <td>$row[created_at]</td>
+                                <td>$row[gmail]</td>
+                                <td>
+                                    <a class='btn btn-primary btn-sm' href='/SAISystem/emailEditUsers.php?id=$row[id]'><i class='fas fa-edit'></i>   EDIT</a>
+                                    <a class='btn btn-danger btn-sm' href='/SAISystem/emailDeleteUsers.php?id=$row[id]'><i class='fas fa-trash-alt'></i>   DELETE</a>
                                 </td>
                             </tr>
                             ";

@@ -54,7 +54,7 @@ else{
 
         $successMessage = "Client updated succesfully";
 
-        header("location: /SAISystem/createPurchase.php");
+        header("location: /SAISystem/salesreport.php");
         exit;
 
     } while(false);
